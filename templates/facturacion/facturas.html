@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Facturas | Cedimed Facturación{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Facturas</h2>
+  <div>
+    <a href="{% url 'factura_new' %}" class="btn btn-primary">Nueva factura</a>
+  </div>
+</div>
+
+<div class="card p-4 mb-4">
+  <form method="get" class="row g-3 align-items-end">
+    <div class="col-md-3">
+      <label class="form-label">Buscar</label>
+      <input type="text" name="q" value="{{ filtro.q }}" class="form-control" placeholder="Número o cliente" />
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Estado</label>
+      <select name="estado" class="form-select">
+        <option value="">Todos</option>
+        <option value="borrador" {% if filtro.estado == 'borrador' %}selected{% endif %}>Borrador</option>
+        <option value="enviada" {% if filtro.estado == 'enviada' %}selected{% endif %}>Enviada</option>
+        <option value="pagada" {% if filtro.estado == 'pagada' %}selected{% endif %}>Pagada</option>
+        <option value="vencida" {% if filtro.estado == 'vencida' %}selected{% endif %}>Vencida</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Cliente</label>
+      <select name="cliente" class="form-select">
+        <option value="">Todos</option>
+        {% for cliente in clientes %}
+          <option value="{{ cliente.id }}" {% if filtro.cliente == cliente.id|stringformat:'s' %}selected{% endif %}>{{ cliente.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Desde</label>
+      <input type="date" name="fecha_desde" value="{{ filtro.fecha_desde }}" class="form-control" />
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">Hasta</label>
+      <input type="date" name="fecha_hasta" value="{{ filtro.fecha_hasta }}" class="form-control" />
+    </div>
+    <div class="col-md-12 d-flex gap-2">
+      <button type="submit" class="btn btn-primary">Filtrar</button>
+      <a href="{% url 'facturas_list' %}" class="btn btn-outline-secondary">Limpiar</a>
+      <a href="{% url 'export_facturas_csv' %}?q={{ filtro.q }}&estado={{ filtro.estado }}&cliente={{ filtro.cliente }}&fecha_desde={{ filtro.fecha_desde }}&fecha_hasta={{ filtro.fecha_hasta }}" class="btn btn-outline-success">Exportar CSV</a>
+    </div>
+  </form>
+</div>
+
+<div class="card p-4">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Número</th>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for factura in facturas %}
+      <tr>
+        <td>{{ factura.numero }}</td>
+        <td>{{ factura.cliente.nombre }}</td>
+        <td>{{ factura.fecha }}</td>
+        <td><span class="badge bg-secondary">{{ factura.get_estado_display }}</span></td>
+        <td>{{ factura.total }} €</td>
+        <td>
+          <a href="{% url 'factura_detail' factura.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+          <a href="{% url 'factura_edit' factura.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center text-muted">No hay facturas registradas con esos filtros.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

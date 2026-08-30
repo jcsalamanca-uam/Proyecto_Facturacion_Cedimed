@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Factura {{ factura.numero }} | Cedimed{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2>Factura {{ factura.numero }}</h2>
+    <p class="text-muted mb-0">Cliente: {{ factura.cliente.nombre }}</p>
+  </div>
+  <div>
+    <a href="{% url 'factura_edit' factura.pk %}" class="btn btn-outline-primary">Editar</a>
+    <a href="{% url 'factura_delete' factura.pk %}" class="btn btn-outline-danger" onclick="return confirm('¿Deseas eliminar esta factura?');">Eliminar</a>
+  </div>
+</div>
+
+<div class="card p-4 mb-4">
+  <div class="row">
+    <div class="col-md-3"><strong>Fecha:</strong> {{ factura.fecha }}</div>
+    <div class="col-md-3"><strong>Vence:</strong> {{ factura.vence|default:'-' }}</div>
+    <div class="col-md-3"><strong>Estado:</strong> {{ factura.get_estado_display }}</div>
+    <div class="col-md-3"><strong>Total:</strong> {{ factura.total }} €</div>
+  </div>
+</div>
+
+<div class="card p-4">
+  <h4>Detalle</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>IVA</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for linea in factura.lineas.all %}
+      <tr>
+        <td>{{ linea.producto.nombre }}</td>
+        <td>{{ linea.cantidad }}</td>
+        <td>{{ linea.precio_unitario }} €</td>
+        <td>{{ linea.iva }}%</td>
+        <td>{{ linea.total_linea }} €</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">No hay líneas en esta factura.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="4" class="text-end">Subtotal</th>
+        <th>{{ factura.subtotal }} €</th>
+      </tr>
+      <tr>
+        <th colspan="4" class="text-end">IVA</th>
+        <th>{{ factura.iva_total }} €</th>
+      </tr>
+      <tr>
+        <th colspan="4" class="text-end">Total</th>
+        <th>{{ factura.total }} €</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+{% endblock %}

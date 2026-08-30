@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Cedimed Facturación{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2>Dashboard</h2>
+    <p class="text-muted mb-0">Resumen de la actividad comercial</p>
+  </div>
+  <a href="{% url 'factura_new' %}" class="btn btn-primary">+ Nueva factura</a>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="card p-3">
+      <div class="text-muted">Clientes</div>
+      <h3>{{ resumen.clientes }}</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <div class="text-muted">Productos</div>
+      <h3>{{ resumen.productos }}</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <div class="text-muted">Facturas</div>
+      <h3>{{ resumen.facturas_total }}</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <div class="text-muted">Total facturado</div>
+      <h3>{{ resumen.total_facturado }} €</h3>
+    </div>
+  </div>
+</div>
+
+<div class="card p-4">
+  <h4>Últimas facturas</h4>
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th>Número</th>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for factura in facturas_recientes %}
+      <tr>
+        <td><a href="{% url 'factura_detail' factura.pk %}">{{ factura.numero }}</a></td>
+        <td>{{ factura.cliente.nombre }}</td>
+        <td>{{ factura.fecha }}</td>
+        <td>
+          <span class="badge bg-secondary badge-status">{{ factura.get_estado_display }}</span>
+        </td>
+        <td>{{ factura.total }} €</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">No hay facturas creadas.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
