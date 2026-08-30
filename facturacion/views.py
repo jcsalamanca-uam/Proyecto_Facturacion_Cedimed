@@ -181,3 +181,13 @@ def factura_delete(request, pk):
     factura.delete()
     messages.success(request, "Factura eliminada.")
     return redirect(reverse("facturas_list"))
+
+
+def clear_database(request):
+    if request.method == "POST":
+        Factura.objects.all().delete()
+        LineaFactura.objects.all().delete()
+        Cliente.objects.all().delete()
+        ProductoServicio.objects.all().delete()
+        messages.warning(request, "La base de datos ha sido vaciada.")
+    return redirect(reverse("dashboard"))

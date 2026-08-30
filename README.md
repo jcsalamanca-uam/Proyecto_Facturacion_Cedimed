@@ -1,43 +1,73 @@
-# Proyecto de Facturación Cedimed
+# Cedimed Facturación
 
-Sistema de facturación y gestión comercial desarrollado con Django.
+Esta es una aplicación sencilla para gestionar clientes, productos y facturas.
+
+## ¿Para qué sirve?
+
+Te ayuda a:
+- guardar clientes
+- guardar productos o servicios
+- crear facturas
+- ver el total y el IVA
+- exportar la información a CSV
+- dejar la base de datos vacía si quieres empezar de cero
 
 ## Requisitos
 
-- Python 3.11+
-- pip
+Necesitas tener instalado:
+- Python 3.11 o superior
+- Internet para instalar paquetes
 
-## Instalación
+## Instalación rápida
 
-```bash
+1. Descarga el proyecto
+2. Abre una ventana de PowerShell dentro de la carpeta del proyecto
+3. Ejecuta estos comandos:
+
+```powershell
 python -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-# o .venv\Scripts\activate  # Windows
+.\.venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py seed_demo_data
 python manage.py runserver
 ```
 
-## Funcionalidades
+4. Abre esta dirección en el navegador:
 
-- Gestión de clientes
-- Gestión de productos y servicios
-- Creación de facturas con líneas de detalle
-- Cálculo automático de subtotal, IVA e importe total
-- Dashboard resumen
-- Estado de facturas: borrador, enviada, pagada, vencida
-
-## Acceso
-
-La aplicación queda disponible en:
-
-- http://127.0.0.1:8000/
-
-## Datos de ejemplo
-
-Se pueden cargar datos demo con el comando:
-
-```bash
-python manage.py seed_demo_data
+```text
+http://127.0.0.1:8000/
 ```
+
+## Si quieres empezar desde cero
+
+La aplicación viene sin datos de ejemplo, lista para usar desde el principio.
+
+Si en algún momento quieres borrar todo lo que has introducido, usa el botón:
+- Vaciar base de datos
+
+Antes de borrarlo la aplicación te pedirá confirmación para que no se borre por accidente.
+
+## Importante
+
+Esta aplicación usa SQLite, que es un archivo local muy fácil de manejar. No hace falta PostgreSQL.
+
+## ¿Qué pasa si quiero limpiar todo?
+
+Pulsa el botón “Vaciar base de datos” desde la izquierda y confirma.
+
+Eso borra:
+- clientes
+- productos
+- facturas
+
+## Si quieres volver a arrancar la app
+
+```powershell
+cd ruta\al\proyecto
+.\.venv\Scripts\activate
+python manage.py runserver
+```
+
+## Dificultad
+
+Es una aplicación fácil de usar para alguien sin experiencia técnica. Solo necesita abrir el navegador y usar las pantallas.

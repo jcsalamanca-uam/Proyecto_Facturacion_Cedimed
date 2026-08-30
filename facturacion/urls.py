@@ -12,4 +12,5 @@ urlpatterns = [
     path("facturas/<int:pk>/", views.factura_detail, name="factura_detail"),
     path("facturas/<int:pk>/editar/", views.factura_edit, name="factura_edit"),
     path("facturas/<int:pk>/eliminar/", views.factura_delete, name="factura_delete"),
+    path("vaciar-base-datos/", views.clear_database, name="clear_database"),
 ]
