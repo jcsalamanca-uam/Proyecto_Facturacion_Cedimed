@@ -1,12 +1,12 @@
 import csv
 
 from django.contrib import messages
-from django.db.models import Sum
+from django.db.models import ProtectedError
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import FacturaForm, LineaFacturaFormSet
+from .forms import ClienteForm, FacturaForm, LineaFacturaFormSet, ProductoServicioForm
 from .models import Cliente, Factura, ProductoServicio
 
 
@@ -32,13 +32,71 @@ def dashboard(request):
 
 
 def clientes_list(request):
-    clientes = Cliente.objects.filter(activo=True).order_by("nombre")
+    clientes = Cliente.objects.all().order_by("nombre")
     return render(request, "facturacion/clientes.html", {"clientes": clientes})
 
 
 def productos_list(request):
-    productos = ProductoServicio.objects.filter(activo=True).order_by("nombre")
+    productos = ProductoServicio.objects.all().order_by("nombre")
     return render(request, "facturacion/productos.html", {"productos": productos})
+
+
+def cliente_form(request, pk=None):
+    cliente = get_object_or_404(Cliente, pk=pk) if pk else None
+    if request.method == "POST":
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            cliente = form.save()
+            messages.success(request, "Cliente guardado correctamente.")
+            return redirect("clientes_list")
+    else:
+        form = ClienteForm(instance=cliente)
+    return render(
+        request,
+        "facturacion/cliente_form.html",
+        {"form": form, "titulo": "Editar cliente" if cliente else "Nuevo cliente"},
+    )
+
+
+def cliente_delete(request, pk):
+    cliente = get_object_or_404(Cliente, pk=pk)
+    if request.method == "POST":
+        try:
+            cliente.delete()
+        except ProtectedError:
+            messages.warning(request, "No se puede eliminar este cliente porque tiene facturas asociadas.")
+        else:
+            messages.success(request, "Cliente eliminado correctamente.")
+    return redirect("clientes_list")
+
+
+def producto_form(request, pk=None):
+    producto = get_object_or_404(ProductoServicio, pk=pk) if pk else None
+    if request.method == "POST":
+        form = ProductoServicioForm(request.POST, instance=producto)
+        if form.is_valid():
+            producto = form.save()
+            messages.success(request, "Producto o servicio guardado correctamente.")
+            return redirect("productos_list")
+    else:
+        form = ProductoServicioForm(instance=producto)
+    return render(
+        request,
+        "facturacion/producto_form.html",
+        {"form": form, "titulo": "Editar producto o servicio" if producto else "Nuevo producto o servicio"},
+    )
+
+
+def producto_delete(request, pk):
+    producto = get_object_or_404(ProductoServicio, pk=pk)
+    if request.method == "POST":
+        try:
+            producto.delete()
+        except ProtectedError:
+            messages.warning(request, "No se puede eliminar este producto porque aparece en una factura.")
+        else:
+            messages.success(request, "Producto o servicio eliminado correctamente.")
+    return redirect("productos_list")
 
 
 def facturas_list(request):
@@ -178,8 +236,9 @@ def factura_edit(request, pk):
 
 def factura_delete(request, pk):
     factura = Factura.objects.get(pk=pk)
-    factura.delete()
-    messages.success(request, "Factura eliminada.")
+    if request.method == "POST":
+        factura.delete()
+        messages.success(request, "Factura eliminada.")
     return redirect(reverse("facturas_list"))
 
 

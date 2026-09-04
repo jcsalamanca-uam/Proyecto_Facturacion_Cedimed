@@ -9,9 +9,9 @@ class Command(BaseCommand):
     help = "Crea datos de ejemplo para la aplicación de facturación"
 
     def handle(self, *args, **options):
+        Factura.objects.all().delete()
         Cliente.objects.all().delete()
         ProductoServicio.objects.all().delete()
-        Factura.objects.all().delete()
 
         clientes = [
             Cliente.objects.create(

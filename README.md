@@ -47,6 +47,17 @@ Si en algún momento quieres borrar todo lo que has introducido, usa el botón:
 
 Antes de borrarlo la aplicación te pedirá confirmación para que no se borre por accidente.
 
+## Editar o eliminar datos individuales
+
+Desde las pantallas de **Clientes** y **Productos** puedes:
+- crear registros nuevos
+- editar cualquier registro existente
+- eliminar un registro individual, confirmando la acción
+
+En **Facturas** puedes editar o eliminar cada factura desde sus acciones. Al editarla también puedes cambiar o quitar sus líneas.
+
+Para conservar la información histórica, no se permite eliminar un cliente que tenga facturas asociadas ni un producto que aparezca en una factura. En esos casos puedes editarlo o desactivarlo.
+
 ## Importante
 
 Esta aplicación usa SQLite, que es un archivo local muy fácil de manejar. No hace falta PostgreSQL.

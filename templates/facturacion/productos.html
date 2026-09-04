@@ -3,7 +3,10 @@
 {% block title %}Productos y servicios | Cedimed Facturación{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Productos y servicios</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Productos y servicios</h2>
+  <a href="{% url 'producto_new' %}" class="btn btn-primary">Nuevo producto</a>
+</div>
 <div class="card p-4">
   <table class="table table-hover">
     <thead>
@@ -13,6 +16,7 @@
         <th>Descripción</th>
         <th>Precio</th>
         <th>IVA</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -23,10 +27,17 @@
         <td>{{ producto.descripcion|default:'-' }}</td>
         <td>{{ producto.precio }} €</td>
         <td>{{ producto.iva }}%</td>
+        <td>
+          <a href="{% url 'producto_edit' producto.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+          <form method="post" action="{% url 'producto_delete' producto.pk %}" class="d-inline" onsubmit="return confirm('¿Deseas eliminar este producto o servicio?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+          </form>
+        </td>
       </tr>
       {% empty %}
       <tr>
-        <td colspan="5" class="text-center text-muted">No hay productos disponibles.</td>
+        <td colspan="6" class="text-center text-muted">No hay productos disponibles.</td>
       </tr>
       {% endfor %}
     </tbody>

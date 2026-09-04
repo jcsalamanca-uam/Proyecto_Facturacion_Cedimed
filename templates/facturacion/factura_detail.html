@@ -10,7 +10,10 @@
   </div>
   <div>
     <a href="{% url 'factura_edit' factura.pk %}" class="btn btn-outline-primary">Editar</a>
-    <a href="{% url 'factura_delete' factura.pk %}" class="btn btn-outline-danger" onclick="return confirm('¿Deseas eliminar esta factura?');">Eliminar</a>
+    <form method="post" action="{% url 'factura_delete' factura.pk %}" class="d-inline" onsubmit="return confirm('¿Deseas eliminar esta factura?');">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+    </form>
   </div>
 </div>
 
