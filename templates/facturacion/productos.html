@@ -25,7 +25,7 @@
         <td>{{ producto.codigo }}</td>
         <td>{{ producto.nombre }}</td>
         <td>{{ producto.descripcion|default:'-' }}</td>
-        <td>{{ producto.precio }} €</td>
+        <td>C$ {{ producto.precio }}</td>
         <td>{{ producto.iva }}%</td>
         <td>
           <a href="{% url 'producto_edit' producto.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>

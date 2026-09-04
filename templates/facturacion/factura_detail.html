@@ -22,7 +22,7 @@
     <div class="col-md-3"><strong>Fecha:</strong> {{ factura.fecha }}</div>
     <div class="col-md-3"><strong>Vence:</strong> {{ factura.vence|default:'-' }}</div>
     <div class="col-md-3"><strong>Estado:</strong> {{ factura.get_estado_display }}</div>
-    <div class="col-md-3"><strong>Total:</strong> {{ factura.total }} €</div>
+    <div class="col-md-3"><strong>Total:</strong> C$ {{ factura.total }}</div>
   </div>
 </div>
 
@@ -43,9 +43,9 @@
       <tr>
         <td>{{ linea.producto.nombre }}</td>
         <td>{{ linea.cantidad }}</td>
-        <td>{{ linea.precio_unitario }} €</td>
+        <td>C$ {{ linea.precio_unitario }}</td>
         <td>{{ linea.iva }}%</td>
-        <td>{{ linea.total_linea }} €</td>
+        <td>C$ {{ linea.total_linea }}</td>
       </tr>
       {% empty %}
       <tr>
@@ -56,15 +56,15 @@
     <tfoot>
       <tr>
         <th colspan="4" class="text-end">Subtotal</th>
-        <th>{{ factura.subtotal }} €</th>
+        <th>C$ {{ factura.subtotal }}</th>
       </tr>
       <tr>
         <th colspan="4" class="text-end">IVA</th>
-        <th>{{ factura.iva_total }} €</th>
+        <th>C$ {{ factura.iva_total }}</th>
       </tr>
       <tr>
         <th colspan="4" class="text-end">Total</th>
-        <th>{{ factura.total }} €</th>
+        <th>C$ {{ factura.total }}</th>
       </tr>
     </tfoot>
   </table>

@@ -70,7 +70,7 @@
         <td>{{ factura.cliente.nombre }}</td>
         <td>{{ factura.fecha }}</td>
         <td><span class="badge bg-secondary">{{ factura.get_estado_display }}</span></td>
-        <td>{{ factura.total }} €</td>
+        <td>C$ {{ factura.total }}</td>
         <td>
           <a href="{% url 'factura_detail' factura.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
           <a href="{% url 'factura_edit' factura.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>

@@ -2,6 +2,8 @@
 
 Esta es una aplicación sencilla para gestionar clientes, productos y facturas.
 
+Todos los importes se muestran en córdobas nicaragüenses (C$).
+
 ## ¿Para qué sirve?
 
 Te ayuda a:
